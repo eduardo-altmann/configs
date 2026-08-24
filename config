@@ -1,0 +1,29 @@
+[capslock]
+command=state=$(xset q | grep "Caps Lock" | awk '{print $4}'); [ "$state" = "on" ] && echo "<span color='#ff6b6b'>CAPS</span>" || echo ""
+interval=1
+markup=pango
+
+[wifi]
+command=SSID=$(iw dev wlp2s0 link 2>/dev/null | grep SSID | awk '{print $2}'); echo "<span color='#88c0d0'>WiFi</span> ${SSID:-desconectado}"
+interval=10
+markup=pango
+
+[battery]
+command=CAP=$(cat /sys/class/power_supply/BAT0/capacity); STATUS=$(cat /sys/class/power_supply/BAT0/status); echo "<span color='#a3be8c'>Bat</span> ${CAP}% ${STATUS}"
+interval=30
+markup=pango
+
+[cpu]
+command=echo "<span color='#ebcb8b'>CPU</span> $(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {printf "%.0f%%", usage}')"
+interval=3
+markup=pango
+
+[memory]
+command=echo "<span color='#bf616a'>RAM</span> $(free -h | awk '/Mem/{print $3 " / " $2}')"
+interval=5
+markup=pango
+
+[time]
+command=date "+%d/%m %H:%M"
+interval=5
+markup=pango
